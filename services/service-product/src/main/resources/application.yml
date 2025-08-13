@@ -1,0 +1,18 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: service-product
+  cloud:
+    nacos:
+      # 配置nacos地址，将微服务注册到nacos上
+      server-addr: 127.0.0.1:8848
+      config:
+        # 如果引入了Nacos配置中心依赖，需要导入Nacos的配置，或禁用Nacos配置检查，否则服务启动失败
+        import-check:
+          enabled: false
+    sentinel:
+      transport:
+        # 配置sentinel地址，连接sentinel
+        dashboard: localhost:8080
+      eager: true # 服务启动就连接sentinel，默认是第一次调用服务才会连接sentinel

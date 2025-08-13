@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':  # 允许所有的请求跨域
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            allowed-methods: '*'
+      routes:
+        - id: order-route
+          uri: lb://service-order
+          # predicates属性的类型是List<PredicateDefinition>
+          predicates:  # PredicateDefinition中有name和args两个属性
+#            - Path=/api/order/**  # 简写
+#            - Login=zhangsan,123456  # 简写
+            - name: Path  # Path表示使用PathRoutePredicateFactory断言工厂
+              args:  # patterns是PathRoutePredicateFactory.Config的属性
+                patterns: /api/order/**
+#            - name: Login  # Login表示使用自定义的LoginRoutePredicateFactory
+#              args:  # LoginRoutePredicateFactory中有username和password两个属性
+#                username: zhangsan
+#                password: 123456
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+            - AddToken=X-Token,request  # 给请求头添加 X-Token
+            - AddToken=X-Token,response  # 给响应头添加 X-Token
+        - id: product-route
+          uri: lb://service-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
+        - id: seckill-order-route
+          uri: lb://service-order
+          predicates:
+            - name: Path
+              args:
+                patterns: /api/order/**
+            - name: Login
+              args:
+                username: zhangsan
+                password: 123456
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}

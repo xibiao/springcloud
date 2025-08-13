@@ -1,0 +1,51 @@
+server:
+  port: 8000
+spring:
+  profiles:
+    active: dev # 通过修改spring.profiles.active属性的值来选择不同环境的配置
+    include: feign # 引入application-feign.yml文件
+  application:
+    name: service-order
+  cloud:
+    nacos:
+      # 配置nacos地址，将微服务注册到nacos上
+      server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+        # 如果没有配置spring.profiles.active，则默认使用public命名空间
+        namespace: ${spring.profiles.active:public}
+    sentinel:
+      transport:
+        # 配置sentinel地址，连接sentinel
+        dashboard: localhost:8080
+      eager: true # 服务启动就连接sentinel，默认是第一次调用服务才会连接sentinel
+      web-context-unify: false  # 是否统一web上下文，默认为true
+
+logging:
+  level:
+    # 给com.springcloud.demo.order.feign包下的类设置日志级别为debug
+    com.springcloud.demo.order.feign: debug
+
+---
+spring:
+  config:
+    import:
+      - nacos:common.properties?group=service-order
+      - nacos:database.properties?group=service-order
+    activate:
+      on-profile: dev
+---
+spring:
+  config:
+    import:
+      - nacos:common.properties?group=service-order
+    activate:
+      on-profile: test
+---
+spring:
+  config:
+    import:
+      - nacos:database.properties?group=service-order
+    activate:
+      on-profile: product

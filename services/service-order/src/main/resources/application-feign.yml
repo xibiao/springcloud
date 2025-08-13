@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default: # 默认连接超时和读取超时都设置成30秒，对所有feign客户端生效
+            logger-level: full
+            connect-timeout: 30000
+            read-timeout: 30000
+          service-product: # 被调用的服务名称，@FeignClient注解value属性值
+            logger-level: full
+            connect-timeout: 3000
+            read-timeout: 5000
+#            request-interceptors:
+#              - com.springcloud.demo.order.interceptor.XTokenRequestInterceptor
+feign:
+  sentinel:
+    enabled: true # 开启熔断降级功能
