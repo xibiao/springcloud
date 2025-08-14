@@ -1,0 +1,23 @@
+[
+  {
+    "resource": "/order/create",  // 资源名称
+    "grade": 1,  // 限流模式，0：线程数量，1：QPS（默认是QPS）
+    "paramIdx": 0, // 参数索引
+    "count": 1,  // 单机阈值
+    "controlBehavior": 0,  // 流控效果，0：快速失败，1：WarmUp，2：排队等待
+    "maxQueueingTimeMs": 500,  // 队列超时时间，controllBehavior=2(排队等待)需要该字段
+    "durationInSec": 1,  // 统计窗口时长，单位秒
+    "clusterMode": false,  // 采用非集群模式
+    "clusterConfig": { // 集群配置，clusterMode=true集群模式需要该配置
+      "thresholdType": 0,  // 集群阈值模式，0：单机均摊，1：总体阈值
+      "fallbackToLocalWhenFail": true  // 失败退化，如果Token Server不可用是否退化到单机限流
+    },
+    "paramFlowItemList": [  // 参数例外项
+      {
+        "object": "",
+        "count": 0,  // 参数值
+        "classType": ""  // 参数类型
+      }
+    ]
+  }
+]

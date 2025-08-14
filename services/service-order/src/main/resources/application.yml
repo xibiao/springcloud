@@ -19,8 +19,41 @@ spring:
       transport:
         # 配置sentinel地址，连接sentinel
         dashboard: localhost:8080
-      eager: true # 服务启动就连接sentinel，默认是第一次调用服务才会连接sentinel
+      eager: true # 饥饿加载，服务启动就连接sentinel，默认是第一次调用服务才会连接sentinel
       web-context-unify: false  # 是否统一web上下文，默认为true
+      datasource:  # 数据源配置
+        flow-datasource:  # 流控规则的数据源配置
+          nacos:  # 当前的存储介质是 Nacos
+            server-addr: 127.0.0.1:8848  # nacos的地址
+            namespace: 677d9fd4-2dea-4391-891d-52671399ed48  # 命名空间id
+            group-id: SENTINEL_GROUP  # 规则配置所属的组，一般建议大写
+            data-id: ${spring.application.name}_flow-rules  # 新建配置指定的DATA ID
+            data-type: json  # 配置格式，即配置数据内容的格式
+            rule-type: flow  # sentinel规则的类型，flow表示流控规则
+        degrade-datasource:  # 熔断降级规则的数据源配置
+          nacos:  # 当前的存储介质是 Nacos
+            server-addr: 127.0.0.1:8848  # nacos的地址
+            namespace: 677d9fd4-2dea-4391-891d-52671399ed48  # 命名空间id
+            group-id: SENTINEL_GROUP  # 规则配置所属的组，一般建议大写
+            data-id: ${spring.application.name}_degrade-rules  # 新建配置指定的DATA ID
+            data-type: json  # 配置格式，即配置数据内容的格式
+            rule-type: degrade  # sentinel规则的类型，degrade表示熔断降级规则
+        param-flow-datasource:  # 热点参数限流规则的数据源配置
+          nacos:  # 当前的存储介质是 Nacos
+            server-addr: 127.0.0.1:8848  # nacos的地址
+            namespace: 677d9fd4-2dea-4391-891d-52671399ed48  # 命名空间id
+            group-id: SENTINEL_GROUP  # 规则配置所属的组，一般建议大写
+            data-id: ${spring.application.name}_param-flow-rules  # 新建配置指定的DATA ID
+            data-type: json  # 配置格式，即配置数据内容的格式
+            rule-type: param_flow  # sentinel规则的类型，param_flow表示热点参数限流规则
+        system-datasource:  # 系统规则的数据源配置
+          nacos:  # 当前的存储介质是 Nacos
+            server-addr: 127.0.0.1:8848  # nacos的地址
+            namespace: 677d9fd4-2dea-4391-891d-52671399ed48  # 命名空间id
+            group-id: SENTINEL_GROUP  # 规则配置所属的组，一般建议大写
+            data-id: ${spring.application.name}_system-rules  # 新建配置指定的DATA ID
+            data-type: json  # 配置格式，即配置数据内容的格式
+            rule-type: system  # sentinel规则的类型，system表示系统规则
 
 logging:
   level:

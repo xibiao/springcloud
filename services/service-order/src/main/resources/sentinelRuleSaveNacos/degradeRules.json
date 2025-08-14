@@ -1,0 +1,11 @@
+[
+  {
+    "resource": "GET:http://service-product/product/query/{id}",  // 资源名称
+    "grade": 0,  // 熔断策略，0：慢调用比例，1：异常比例，2：异常数
+    "count": 1000, // 阈值数量，grade=0，count表示最大响应时间RT，单位毫秒；grade=1，count表示比例阈值，取值范围0.0-1.0；grade=2，count表示异常数
+    "slowRatioThreshold": 1.0,  // 比例阈值，grade=0慢调用比例熔断策略时需要该属性
+    "timeWindow": 30,  // 熔断时长，单位秒
+    "minRequestAmount": 5,  // 最小请求数
+    "statIntervalMs": 5000  // 统计时长，单位毫秒
+  }
+]

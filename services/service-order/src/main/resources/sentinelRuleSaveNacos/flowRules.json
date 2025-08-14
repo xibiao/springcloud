@@ -1,0 +1,18 @@
+[
+  {
+    "resource": "/order/create",  // 资源名称
+    "limitApp": "default",  // 应用来源，使用默认值defaul
+    "grade": 1,  // 阈值类型，0：线程数量，1：QPS
+    "count": 2,  // 单机阈值（若"grade": 1,"count": 2，表示每秒最多允许两个请求）
+    "strategy": 0,  // 流控模式，0：直接，1：关联，2：链路
+    "refResource": 0,  // 关联资源，strategy =1关联模式或strategy =2链路模式需要该字段
+    "controlBehavior": 0,  // 流控效果，0：快速失败，1：WarmUp，2：排队等待
+    "warmUpPeriodSec": 10,  // 预热时长，controllBehavior=1(WarmUp)需要该字段
+    "maxQueueingTimeMs": 500,  // 队列超时时间，controllBehavior=2(排队等待)需要该字段
+    "clusterMode": false,  // 采用非集群模式
+    "clusterConfig": { // 集群配置，clusterMode=true集群模式需要该配置
+      "thresholdType": 0,  // 集群阈值模式，0：单机均摊，1：总体阈值
+      "fallbackToLocalWhenFail": true  // 失败退化，如果Token Server不可用是否退化到单机限流
+    }
+  }
+]
